@@ -9,7 +9,9 @@ before_install:
   # This is because we want heavy-tests to run against master nightly
   # in a Travis cron, but with a different set of tests than master has
   # in .travis.yml.
+  - cp .travis.yml /tmp/travis.yml
   - git pull origin master --strategy=recursive --strategy-option=theirs --no-edit
+  - if ! git diff -q .travis.yml /tmp/travis.yml ; then echo "Please merge master into test-everything"; exit; fi
   - '([ $TRAVIS_OS_NAME == linux ] && dpkg -s libaugeas0) || (brew update && brew install augeas python3)'
 
 before_script:
